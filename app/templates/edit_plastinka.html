@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% from 'form.html' import plastinka_form %}
+
+{% block content %}
+  <h2 class="my-3">Редактирование пластинки</h2>
+  {{ plastinka_form(form, url_for('plastinkas.edit_plastinka', plastinka_id=plastinka.id), genres, plastinka=plastinka, form_type='edit') }}
+
+{% endblock %}

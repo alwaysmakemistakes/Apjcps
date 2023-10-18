@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>{{ plastinka.name }}</h2>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>Автор:</th>
+              <td>{{ plastinka.author }}</td>
+            </tr>
+            <tr>
+              <th>Описание:</th>
+              <td>{{ plastinka.description |safe }}</td>
+            </tr>            
+            <tr>
+              <th>Год издания:</th>
+              <td>{{ plastinka.year }}</td>
+            </tr>
+            <tr>
+              <th>Издательство:</th>
+              <td>{{ plastinka.publisher }}</td>
+            </tr>
+            <tr>
+              <th>Объем:</th>
+              <td>{{ plastinka.volume }}</td>
+            </tr>
+            <tr>
+              <th>Средний рейтинг:</th>
+              <td>{{ plastinka_rating }}</td>
+            </tr>
+            <tr>
+              <th>Жанр:</th>
+              <td>
+                {% for genre in plastinka.genres %}
+                {{ genre.name }}{% if loop.last %}{% else %}, {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <img src="{{ url_for('image', image_id=plastinka.id_image) }}" alt="Обложка пластинки" class="plastinka-cover">
+      </div>
+    </div>
+    {% if current_user.is_authenticated %}
+    {% if flag == False %}
+    <section class="add-review mb-5">
+      <h2 class="mb-3 text-center text-uppercase font-weight-bold">Оставить отзыв</h2>
+      <a href="{{ url_for('plastinkas.reviews', plastinka_id=plastinka.id) }}" class="btn btn-primary">Оставить отзыв</a>
+    </section>
+  
+    {% elif flag == True %}
+    <section class="reviews mb-5">
+        <h2 class="mb-3 text-center text-uppercase font-weight-bold">Мой отзыв</h2>
+        {% for review in reviews_all %}
+        {% if review.user_id == current_user.id %}
+        <div class="card mb-3 bg-secondary bg-opacity-10">
+            <div class="card-body">
+                {% for user in users %}
+                {% if review.user_id == user.id %}
+                <h5 class="card-title mb-3">{{ user.first_name }} {{ user.last_name }}</h5>
+                {% endif %}
+                {% endfor %}
+
+                {% if review.rating == 0 %}
+                <p class="card-text">Оценка: Ужасно</p>
+                {% endif %}
+                {% if review.rating == 1 %}
+                <p class="card-text">Оценка: Плохо</p>
+                {% endif %}
+                {% if review.rating == 2 %}
+                <p class="card-text">Оценка: Неудовлетворительно</p>
+                {% endif %}
+                {% if review.rating == 3 %}
+                <p class="card-text">Оценка: Удовлетворительно</p>
+                {% endif %}
+                {% if review.rating == 4 %}
+                <p class="card-text">Оценка: Хорошо</p>
+                {% endif %}
+                {% if review.rating == 5 %}
+                <p class="card-text">Оценка: Отлично</p>
+                {% endif %}
+
+                <p class="card-text">Дата: {{ review.created_at }}</p>
+                <p class="card-text">{{ review.text |safe }}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </section>
+    {% endif %}
+    {% endif %}
+
+    <section class="reviews mb-5">
+        <h2 class="mb-3 text-center text-uppercase font-weight-bold">Все отзывы</h2>
+        {% for review in reviews_lim5 %}
+        <div class="card mb-3">
+            <div class="card-body">
+                {% for user in users %}
+                {% if review.user_id == user.id %}
+                <h5 class="card-title mb-3">{{ user.first_name }} {{ user.last_name }}</h5>
+                {% endif %}
+                {% endfor %}
+                {% if review.rating == 0 %}
+                <p class="card-text">Оценка: Ужасно</p>
+                {% endif %}
+                {% if review.rating == 1 %}
+                <p class="card-text">Оценка: Плохо</p>
+                {% endif %}
+                {% if review.rating == 2 %}
+                <p class="card-text">Оценка: Неудовлетворительно</p>
+                {% endif %}
+                {% if review.rating == 3 %}
+                <p class="card-text">Оценка: Удовлетворительно</p>
+                {% endif %}
+                {% if review.rating == 4 %}
+                <p class="card-text">Оценка: Хорошо</p>
+                {% endif %}
+                {% if review.rating == 5 %}
+                <p class="card-text">Оценка: Отлично</p>
+                {% endif %}
+
+                <p class="card-text">Дата: {{ review.created_at }}</p>
+                <p class="card-text">{{ review.text  |safe  }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% if reviews_lim5|length == 0 %}
+        <p class="text-center">Нет отзывов.</p>
+        {% endif %}
+    </section>
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Все пластинки</a>
+  </div>
+  <div class="text-center">
+</div>
+{% endblock %}

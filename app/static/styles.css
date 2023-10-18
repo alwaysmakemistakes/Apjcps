@@ -1,0 +1,42 @@
+.logo {
+    max-width: 175px;
+}
+
+.profile {
+    max-width: 45px;
+}
+
+.background-preview {
+    border: 3px dashed grey;
+    flex-grow: 1;
+}
+
+.title-area {
+    background-color: black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    font-size: 1.5rem;
+    min-height: calc(75vh);
+}
+
+.courses-list .row:hover {
+    cursor: pointer;
+    border: 1px solid black !important;
+}
+
+.course-logo {
+    min-width: 170px;
+    width: 100%;
+    height: 170px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.plastinka-cover {
+    width: 300px; 
+    height: 300px;
+  }
+  

@@ -1,0 +1,42 @@
+{% extends 'logs/logsbase.html' %}
+{% from 'pagination.html' import render_pagination %}
+
+{% block logs %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                №
+            </th>
+            <th>
+                Название пластинки
+            </th>
+            <th>
+                Количество просмотров
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>
+                {{loop.index}}
+            </td>
+            <td>
+                {{log[0].name}}
+            </td>
+            <td>
+                {{log[1]}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="mt-4 mb-5">
+    {{ render_pagination(pagination, request.endpoint) }}
+</div>
+
+
+{% endblock %}

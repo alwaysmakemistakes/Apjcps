@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% from 'form.html' import plastinka_form %}
+
+    {{ plastinka_form(form_title='Создание пластинки', form_action=url_for('plastinkas.create_plastinka'), genres=genres) }}
+{% endblock %}

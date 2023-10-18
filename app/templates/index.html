@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+{% block content %}
+<div class="container">
+    <div class="my-5">
+
+        <h2 class="mb-3 text-center text-uppercase font-weight-bold">Каталог композиций</h2>
+
+        <form class="mb-3" action="{{ url_for('index') }}" method="GET">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="plastinka-title">Название пластинки</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ request.args.get('name', '') }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="plastinka-genre">Жанры пластинок</label>
+                    <div>
+                        {% for genre in genres %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="genre_id" id="genre{{ genre.id }}" value="{{ genre.id }}"
+                                    {% if genre.id|string in request.args.getlist('genre_id') %}
+                                        checked
+                                    {% endif %}>
+                                <label class="form-check-label" for="genre{{ genre.id }}">{{ genre.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="plastinka-year">Год выпуска</label>
+                    <select class="form-select" id="plastinka-year" name="year">
+                        <option value="">-- Выберите год --</option>
+                        {% for year in years %}
+                            <option value="{{ year }}" {% if year|string == request.args.get('year') %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <label for="plastinka-author">Автор</label>
+                    <input type="text" class="form-control" id="plastinka-author" name="author" value="{{ request.args.get('author', '') }}">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </div>
+            </div>
+        </form>
+        
+        
+        
+    </div>
+
+    <div class="plastinkas-list container-fluid mt-3 mb-3">
+    </div>
+
+    <div class="plastinkas-list container-fluid mt-3 mb-3">
+        {% for plastinka in plastinkas %}
+            <div class="row p-3 border rounded mb-3" data-url="{{ url_for('plastinkas.show', plastinka_id=plastinka.id) }}">
+                {% for image in images %}
+                    {% if image.id == plastinka.id_image %}
+                        <img class="w-25 h-25" src="{{ url_for('image', image_id=image.id) }}">
+                    {% endif %}
+                {% endfor %}
+            <div class="col-md-9 align-items-center">
+              <div class="d-flex">
+                <h4 class="text-uppercase">{{ plastinka.name }}</h4>
+                <p class="ms-auto rating"></p>
+              </div>
+              <p class="text-muted my-3">{{ plastinka.author }}</p>
+              {% for genre in plastinka.genres %}
+              {{ genre.name }}{% if loop.last %}{% else %}, {% endif %}
+              {% endfor %}
+              <p class="ms-auto rating">
+              </p>
+              <p>Кол-во рецензий:</p>
+              <p class="text-muted my-3">{{ plastinka.rating_num }}</p>
+
+              <p class="ms-auto rating">
+                <span>★</span> <span>{{ "%.2f" | format(plastinka.rating) }}</span>
+              </p>
+              <p class="text-muted my-3">{{ plastinka.year }}</p>
+            
+
+             
+            </p>
+            <a href="{{ url_for('plastinkas.show', plastinka_id=plastinka.id) }}" class="btn btn-primary">Подробнее</a>
+            {% if current_user.is_authenticated %}
+            {% if current_user.can('edit_plastinka', record=plastinka) %}
+                <a class="btn btn-primary" href="{{ url_for('plastinkas.edit_plastinka', plastinka_id=plastinka.id) }}">Редактировать</a>
+            {% endif %}
+            {% if current_user.can('delete', record=plastinka) %}
+                <button class="btn btn-danger" data-bs-toggle="modal" data-url="{{ url_for('plastinkas.delete_plastinka', plastinka_id=plastinka.id) }}" data-title="{{ plastinka.title }}" data-bs-target="#deletePlastinka">Удалить</button>
+            {% endif %}
+            {% endif %}
+        
+            
+            <!-- Modal -->
+            <div class="modal fade" id="deletePlastinka" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Удаление пластинки</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Вы уверены, что хотите удалить книгу <span id="plastinkaName"></span>?</p>
+                            <form id="deletePlastinkaForm" method="POST" action="{{ url_for('plastinkas.delete_plastinka', plastinka_id=plastinka.id) }}">
+                                <input type="submit" id="deletePlastinkaButton" style="display: none;">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <label for="deletePlastinkaButton" class="btn btn-danger">Удалить</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+          
+        {% endfor %}
+
+        <div class="mb-5">
+            {{ render_pagination(pagination, request.endpoint, search_params) }}
+        </div>
+    </div>
+      
+    
+    {% if current_user.is_authenticated %}
+    {% if current_user.is_admin() %}
+        <div class="text-center my-3">
+            <a class="btn btn-lg btn-dark" href="{{ url_for('plastinkas.add_plastinka') }}">Добавить пластинку</a>
+        </div>
+    {% endif %}
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='plastinka.js') }}"></script>
+
+</div>
+{% endblock %}
