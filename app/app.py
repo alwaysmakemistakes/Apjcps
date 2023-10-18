@@ -94,8 +94,6 @@ def index():
 # коммент
 
 @app.route('/image/<image_id>')
-@login_required
-@permission_check("create")
 def image(image_id):
     # Получение объекта изображения по идентификатору
     image = Image.query.get(image_id)
