@@ -94,8 +94,7 @@
             {% if current_user.can('delete', record=plastinka) %}
                 <button class="btn btn-danger" data-bs-toggle="modal" data-url="{{ url_for('plastinkas.delete_plastinka', plastinka_id=plastinka.id) }}" data-title="{{ plastinka.title }}" data-bs-target="#deletePlastinka">Удалить</button>
             {% endif %}
-            {% endif %}
-        
+            {% endif %}  
             
             <!-- Modal -->
             <div class="modal fade" id="deletePlastinka" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

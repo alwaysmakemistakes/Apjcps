@@ -25,6 +25,8 @@ class Plastinka(db.Model):
     id_image = db.Column(db.String(100), db.ForeignKey('images.id', ondelete='CASCADE'))
     genres = db.relationship('Genre', secondary='plastinka_genre', backref=db.backref('plastinkas', lazy='dynamic'))
 
+    visits = db.relationship('PlastinkaVisits', cascade='all, delete-orphan')
+
     def __repr__(self):
         return '<Plastinka %r>' % self.name
     

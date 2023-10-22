@@ -327,8 +327,6 @@ def creating_plastinka_visits(user_id, plastinka_id):
 
 
 
-
-
 @bp.route('<int:plastinka_id>/delete', methods=['POST'])
 @login_required
 @permission_check("delete")
@@ -347,10 +345,6 @@ def delete_plastinka(plastinka_id):
         flash('При удалении пластинки возникла ошибка', 'danger')
 
     return redirect(url_for('index'))
-
-
-
-
 
 
 

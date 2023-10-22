@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, abort, send_from_directory, request, session
+from flask import Flask, Blueprint, render_template, abort, send_from_directory, request, session, flash, redirect, url_for, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, current_user
@@ -20,12 +20,14 @@ from plastinkas import bp as plastinka_bp
 app.register_blueprint(auth_bp)
 app.register_blueprint(plastinka_bp)
 
+
 from logs import bp as logs_bp
 app.register_blueprint(logs_bp)
 
+
 init_login_manager(app)
 
-from models import Plastinka, Image, Genre, Review, PlastinkaVisits
+from models import Plastinka, Image, Genre, Review, PlastinkaVisits, User
 from tools import PlastinkaFilter
 PER_PAGE = 10
 
@@ -102,6 +104,40 @@ def image(image_id):
         abort(404)
     # Отправка файла изображения из указанной директории на сервере
     return send_from_directory(app.config['UPLOAD_FOLDER'], image.storage_filename)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

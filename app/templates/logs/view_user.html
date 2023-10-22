@@ -1,0 +1,41 @@
+{% extends 'logs/logsbase.html' %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Просмотр пользователя</h2>
+                <p><strong>Имя:</strong> {{ user.first_name }}</p>
+                <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+                <p><strong>Логин:</strong> {{ user.login }}</p>
+            </div>
+        </div>
+        <section class="reviews mb-5">
+            <a href="{{ url_for('logs.list_users') }}" class="btn btn-primary">Назад</a>
+            <h2 class="mb-3 text-center text-uppercase font-weight-bold">Отзывы пользователя</h2>
+            {% for review in reviews %}
+            <div class="card mb-3 bg-secondary bg-opacity-10">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">{{ review.plastinka.name }}</h5>
+                    <p class="card-text">Дата: {{ review.created_at }}</p>
+                    <p class="card-text">Оценка: 
+                        {% if review.rating == 0 %}
+                            Ужасно
+                        {% elif review.rating == 1 %}
+                            Плохо
+                        {% elif review.rating == 2 %}
+                            Неудовлетворительно
+                        {% elif review.rating == 3 %}
+                            Удовлетворительно
+                        {% elif review.rating == 4 %}
+                            Хорошо
+                        {% elif review.rating == 5 %}
+                            Отлично
+                        {% endif %}
+                    </p>
+                    <p class="card-text">{{ review.text | safe }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}

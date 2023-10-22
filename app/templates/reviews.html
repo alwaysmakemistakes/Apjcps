@@ -2,9 +2,9 @@
 
 {% block content %}
 <div class="container">
-    <h1>Отзывы для курса "{{ plastinka.name }}"</h1>
+    <h1>Отзыв для пластинки "{{ plastinka.name }}"</h1>
     <div class="mb-3">
-        <a href="{{ url_for('plastinkas.show', plastinka_id=plastinka.id) }}" class="btn btn-secondary">Назад к курсу</a>
+        <a href="{{ url_for('plastinkas.show', plastinka_id=plastinka.id) }}" class="btn btn-secondary">Назад к компазициям</a>
     </div>
       
     {% if reviews_all.items %}

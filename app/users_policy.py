@@ -42,6 +42,12 @@ class UsersPolicy:
         return current_user.is_admin() or current_user.is_moder()
     
     def get_logs(self):
+        return current_user.is_admin()
+
+    def list_users(self):
+        return current_user.is_admin() 
+    
+    def view_user(self):
         return current_user.is_admin() 
 
         

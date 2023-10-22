@@ -1,0 +1,22 @@
+{% extends 'logs/logsbase.html' %}
+
+{% block logs %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center">Список пользователей</h2>
+                <ul class="list-group">
+                    {% for user in users %}
+                        <li class="list-group-item">
+                            <strong>Имя:</strong> {{ user.first_name }}<br>
+                            <strong>Фамилия:</strong> {{ user.last_name }}<br>
+                            <strong>Отчество:</strong> {{ user.middle_name }}<br>
+                            <strong>Логин:</strong> {{ user.login }}<br>
+                            <a class="btn btn-primary" href="{{ url_for('logs.view_user', user_id=user.id) }}">Просмотр пользователя</a>
+                    {% endfor %}
+                </ul>
+        
+            </div>
+        </div>
+    </div>
+{% endblock %}

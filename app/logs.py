@@ -1,7 +1,10 @@
-from flask import Blueprint, render_template, request
-from flask_login import login_required
+# from flask import Blueprint, render_template, request
+# from flask_login import login_required
+
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from app import db, app
-from models import PlastinkaVisits, Plastinka
+from models import PlastinkaVisits, Plastinka, User, Review
 from auth import permission_check
 
 bp = Blueprint('logs', __name__, url_prefix='/logs')
@@ -39,3 +42,41 @@ def plastinkas_statistics():
     return render_template('logs/plastinkas_statistics.html',
                            logs=data_for_render,
                            pagination=pagination)
+
+
+@bp.route('/list_users')
+@login_required
+@permission_check('list_users') 
+def list_users():
+    # Получите список всех пользователей из базы данных
+    users = User.query.all()
+
+    # Отобразите список пользователей на странице
+    return render_template('logs/users.html', users=users)
+
+
+
+@bp.route('/view_user/<int:user_id>')
+@login_required
+@permission_check('view_user') 
+def view_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        reviews = Review.query.filter_by(user_id=user.id).all()
+        return render_template('logs/view_user.html', user=user, reviews=reviews)
+    else:
+        flash('Пользователь не найден', 'danger')
+        return redirect(url_for('logs/view_user.html'))
+
+# @bp.route('/delete_user/<int:user_id>', methods=['POST'])
+# @login_required
+# def delete_user(user_id):
+#     user = User.query.get(user_id)
+#     if user:
+#         db.session.delete(user)
+#         db.session.commit()
+#         flash('Пользователь успешно удален.', 'success')
+#     else:
+#         flash('Пользователь не найден.', 'danger')
+#     return redirect(url_for('logs.users'))
+
