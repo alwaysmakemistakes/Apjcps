@@ -7,7 +7,12 @@
                 <p><strong>Имя:</strong> {{ user.first_name }}</p>
                 <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
                 <p><strong>Логин:</strong> {{ user.login }}</p>
-            </div>
+                <p><strong>Роль:</strong> {{ user_role.role_name }}</p>
+                {% if current_user.is_authenticated and user_role.role_name != 'Администратор' %}
+                <form action="{{ url_for('logs.update_admin', user_id=user.id) }}" method="post">
+                    <button type="submit" class="btn btn-success">Назначить админом</button>
+                </form>
+            {% endif %}
         </div>
         <section class="reviews mb-5">
             <a href="{{ url_for('logs.list_users') }}" class="btn btn-primary">Назад</a>

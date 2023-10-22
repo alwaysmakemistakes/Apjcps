@@ -4,7 +4,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from app import db, app
-from models import PlastinkaVisits, Plastinka, User, Review
+from models import PlastinkaVisits, Plastinka, User, Review, Role
 from auth import permission_check
 
 bp = Blueprint('logs', __name__, url_prefix='/logs')
@@ -63,10 +63,17 @@ def view_user(user_id):
     user = User.query.get(user_id)
     if user:
         reviews = Review.query.filter_by(user_id=user.id).all()
-        return render_template('logs/view_user.html', user=user, reviews=reviews)
+
+        # Получите объект роли пользователя из базы данных
+        user_role = Role.query.get(user.role_id)
+
+        
+
+        return render_template('logs/view_user.html', user=user, reviews=reviews, user_role=user_role)
     else:
         flash('Пользователь не найден', 'danger')
         return redirect(url_for('logs/view_user.html'))
+
 
 # @bp.route('/delete_user/<int:user_id>', methods=['POST'])
 # @login_required
@@ -80,3 +87,17 @@ def view_user(user_id):
 #         flash('Пользователь не найден.', 'danger')
 #     return redirect(url_for('logs.users'))
 
+
+
+@bp.route('/update_admin/<int:user_id>', methods=['POST'])
+@login_required
+@permission_check("update_admin")
+def update_admin(user_id):
+    user = User.query.get(user_id)
+    if user is not None:
+        user.role_id = current_app.config['ADMIN_ROLE_ID']
+        db.session.commit()
+        flash('Пользователь успешно назначен администратором.', 'success')
+    else:
+        flash('Пользователь не найден.', 'danger')
+    return redirect(url_for('logs.view_user', user_id=user_id))

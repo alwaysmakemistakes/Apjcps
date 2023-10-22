@@ -8,6 +8,7 @@
                 <p><strong>Имя:</strong> {{ current_user.first_name }}</p>
                 <p><strong>Фамилия:</strong> {{ current_user.last_name }}</p>
                 <p><strong>Логин:</strong> {{ current_user.login }}</p>
+                <p><strong>Роль:</strong> {{ user_role.role_name }}</p>
                 <a class="btn btn-primary" href="{{ url_for('auth.change_password') }}">Сменить пароль</a>
                 <a class="btn btn-primary" href="{{ url_for('auth.edit_user', user_id=user.id) }}" >Редактировать профиль</a>
 

@@ -49,6 +49,9 @@ class UsersPolicy:
     
     def view_user(self):
         return current_user.is_admin() 
+    
+    def update_admin(self):
+        return current_user.is_admin() 
 
         
     # def edit(self):

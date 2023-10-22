@@ -66,7 +66,7 @@ def login():
         flash('Введены неверные логин и/или пароль.', 'danger')
     return render_template('login.html')
 
-from models import Plastinka, Image, Genre, Review, PlastinkaVisits, User
+from models import Plastinka, Image, Genre, Review, PlastinkaVisits, User, Role
 from tools import PlastinkaFilter
 
 @bp.route('/logout')
@@ -131,8 +131,10 @@ def register():
 def lk():
     reviews = Review.query.filter_by(user_id=current_user.id).all()
 
-    return render_template('lk.html', reviews=reviews, user=current_user)
+    # Получите объект роли пользователя из базы данных
+    user_role = Role.query.get(current_user.role_id)
 
+    return render_template('lk.html', reviews=reviews, user=current_user, user_role=user_role)
 
 
 from flask import request, flash, redirect, url_for
