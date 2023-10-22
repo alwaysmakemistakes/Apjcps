@@ -11,6 +11,26 @@
                 <p><strong>Роль:</strong> {{ user_role.role_name }}</p>
                 <a class="btn btn-primary" href="{{ url_for('auth.change_password') }}">Сменить пароль</a>
                 <a class="btn btn-primary" href="{{ url_for('auth.edit_user', user_id=user.id) }}" >Редактировать профиль</a>
+                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Удалить аккаунт</a>
+
+                <!-- Модальное окно для удаления аккаунта -->
+                <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteAccountModalLabel">Удаление аккаунта</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Вы уверены, что хотите удалить свой аккаунт? Все данные будут утеряны.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                <a class="btn btn-danger" href="{{ url_for('auth.delete_account') }}">Удалить аккаунт</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>

@@ -184,3 +184,19 @@ def edit_user(user_id):
 
     # Если метод запроса не POST, покажите форму редактирования
     return render_template('edit_user.html', user=user)
+
+@bp.route('/delete_account', methods=['GET', 'POST'])
+@login_required
+def delete_account():
+    if request.method == 'POST':
+        user = User.query.get(current_user.id)
+        if user:
+            # Удаление пользователя и всех связанных данных
+            db.session.delete(user)
+            db.session.commit()
+            flash('Ваш аккаунт был успешно удален.', 'success')
+            logout_user()  # Разлогинивание пользователя
+            return redirect(url_for('auth.login'))
+
+    return render_template('delete_account.html')
+
