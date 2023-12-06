@@ -22,3 +22,5 @@ MODER_ROLE_ID = 2
 LOGS_PER_PAGE = 10
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media', 'images')
+
+
