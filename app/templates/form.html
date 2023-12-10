@@ -1,0 +1,89 @@
+{% macro plastinka_form(form_title=None, form_action='', genres=genres, plastinka=None, form_type='') %}
+    <div class="container">
+        <h2 class="my-3 text-center text-uppercase font-weight-bold">
+            {% if form_title %}
+                {{ form_title }}
+            {% else %}
+            {% endif %}
+        </h2>
+
+        <form method="POST" action="{{ form_action }}" enctype="multipart/form-data">
+            <div class="mb-3 row">
+                <div class="col-md-6 d-flex flex-column">
+                    <div class="mb-3">
+                        <label for="name">Название</label>
+                        <input class="form-control" type="text" name="name" id="name" value="{{ plastinka.name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author">Автор</label>
+                        <input class="form-control" type="text" name="author" id="author" value="{{ plastinka.author }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="year">Год</label>
+                        <input class="form-control" type="text" name="year" id="year" value="{{ plastinka.year }}">
+                    </div>
+                    
+                        <div class="mb-3">
+                            <label for="description">Краткое описание</label>
+                            <textarea class="form-control" name="description" id="description">{{ plastinka.description }}</textarea>
+                        </div>
+                    </div>
+
+                    
+                        {% if form_type == 'edit' %}
+                        <div class="mb-3">
+                            <label for="genres">Жанры</label>
+                            {% for genre in genres %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="genres" id="genre{{ genre.id }}" value="{{ genre.id }}"
+                                    {% if genre in plastinka.genres %}
+                                        checked
+                                    {% endif %}>
+                                    <label class="form-check-label" for="genre{{ genre.id }}">{{ genre.name }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>                        
+                    {% else %}
+                    <div class="mb-3">
+                        <label for="genres">Жанры</label>
+                        {% for genre in genres %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="genres" id="genre{{ genre.id }}" value="{{ genre.id }}">
+                            <label class="form-check-label" for="genre{{ genre.id }}">{{ genre.name }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                                        
+                    {% endif %}
+                
+                    <div class="mb-3">
+                        <label for="publisher">ЛЭЙБЛ</label>
+                        <input class="form-control" type="text" name="publisher" id="publisher" value="{{ plastinka.publisher }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="volume">Количество треков</label>
+                        <input class="form-control" type="text" name="volume" id="volume" value="{{ plastinka.volume }}">
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex flex-column">
+                    {% if form_type != 'edit' %}
+                    <div class="col-md-6 d-flex flex-column">
+                        <div class="mb-3">
+                            <label for="background_img">Обложка</label>
+                            <input class="form-control" type="file" name="background_img" id="background_img">
+                        </div>
+                        <div class="mb-3 background-preview p-3 rounded d-flex align-items-center justify-content-center">
+                            <img src="#" class="img-fluid d-none" alt="">
+                            <label for="background_img" class="btn btn-dark">Выбрать изображение</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3 text-center">
+                <input type="submit" class="btn btn-dark" value="Сохранить">
+            </div>
+        </form>
+    </div>
+{% endmacro %}

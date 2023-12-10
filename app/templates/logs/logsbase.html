@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'logs.users_statistics' %} active {% endif %}"
+                href="{{url_for('logs.users_statistics')}}">Журнал действий пользователей</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'logs.plastinkas_statistics' %} active {% endif %}" href="{{url_for('logs.plastinkas_statistics')}}">Статистика просмотра пластинок</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'logs.list_users' %} active {% endif %}"
+                href="{{url_for('logs.list_users')}}">Список пользователей</a>
+        </li>
+    </ul>
+
+    {% block logs %}
+    {% endblock %}
+</div>
+{% endblock %}

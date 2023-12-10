@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST">
+
+  <div class="container-fluid d-flex h-100 justify-content-center align-items-center p-5">
+     <div class="row bg-white shadow-lg rounded">
+      <div class="col border rounded p-4">
+        <div class="form-floating mb-3">
+          <input type="text" name="login" class="form-control" id="floatingInput" placeholder="name@example.com">
+          <label for="floatingInput">Login</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" name="remember_me" id="remember_me">
+          <label class="form-check-label" for="remember_me">
+            Запомнить меня
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Войти</button>
+        <div class="col-md-12 mt-3">
+          <a class="btn btn-outline-primary w-100" href="{{ url_for('auth.register') }}">Зарегистрироваться</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
