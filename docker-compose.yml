@@ -1,0 +1,41 @@
+
+version: "3"  # Версия Docker Compose
+
+services:       # Описание сервисов
+  web:
+    image: vital31/auto:web         # Название сервиса
+    build:      # Сборка образа
+      context: .  # Контекст сборки (текущая директория)
+    ports:
+      - "8888:5000"  # Пробрасываем порт хоста на порт контейнера
+    volumes:
+      - ./app:/app  # Монтируем локальную директорию в контейнер
+    environment:
+      FLASK_APP: app.py  # Устанавливаем переменную окружения для Flask
+    networks:
+      net1:
+        ipv4_address: 192.168.30.10
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"  # Пробрасываем порт MySQL для доступа извне контейнера
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: Apjcps1
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_HOST: 192.168.30.10
+    networks:
+      net1:
+       ipv4_address: 192.168.30.11
+      
+      
+networks:
+  net1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.30.0/24
+        
+        
