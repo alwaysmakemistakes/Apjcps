@@ -255,7 +255,29 @@ class PlastinkasBlueprintTestCase(unittest.TestCase):
             ))
             response = self.app.get('/plastinkas/add_plastinka', follow_redirects=True)
             self.assertEqual(response.status_code, 200)  # Проверка успешного ответа сервера
+    
+    def test_add_plastinka_route(self):
+        with self.app:
+            self.app.post('/auth/login', data=dict(
+                login='testuser',
+                password='testpassword'
+            ))
+            response = self.app.get('/plastinkas/add_plastinka', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)  # Проверка успешного ответа сервера
 
+            # Теперь добавим тест на создание пластинки
+            response = self.app.post('/plastinkas/add_plastinka', data=dict(
+                name='Test Plastinka',
+                author='Test Author',
+                genres='Test Genre',
+                year='2023',
+                description='12',
+                publisher='31'
+            ), follow_redirects=True)
+            self.assertEqual(response.status_code, 200)  # Проверка успешного ответа сервера
+
+            # Добавим дополнительную проверку, чтобы убедиться, что пластинка была создана
+            
     # Тестирование маршрута редактирования пластинки
     def test_edit_plastinka_route(self):
         with self.app:
@@ -301,6 +323,73 @@ class LogsBlueprintTestCase(unittest.TestCase):
             ))
             response = self.app.get('/logs/plastinkas_statistics', follow_redirects=True)
             self.assertEqual(response.status_code, 200)  # Проверка успешного ответа сервера
+
+
+            
+# from flask import Flask, url_for
+# from unittest import TestCase
+
+# class TestAddPlastinka(TestCase):
+#     def setUp(self):
+#         self.app = Flask(__name__)
+#         self.app.config['TESTING'] = True
+#         self.app.config['WTF_CSRF_ENABLED'] = False
+
+#     def test_add_plastinka(self):
+#         with self.app.test_request_context('/add_plastinka', method='POST'):
+#             request_url = url_for('plastinkas.add_plastinka')  # Попробуйте обновить имя маршрута для Blueprint
+#   # Получаем URL для маршрута add_plastinka
+#             self.assertEqual(request_url, '/add_plastinka')  # Проверяем URL
+
+#             with self.app.test_client() as client:
+#                 response = client.post(request_url, data=dict(
+#                     name='TestPlastinka',
+#                     author='TestAuthor',
+#                     genres='TestGenre',
+#                     year='2023',
+#                     description='21',
+#                     publisher='12'
+#                 ), follow_redirects=True)
+                
+#                 self.assertEqual(response.status_code, 200)
+
+
+
+# import unittest
+# from flask import Flask
+
+from unittest import TestCase
+from unittest.mock import patch
+from flask import Flask
+from app import app, db
+
+class AuthTestCase(unittest.TestCase):
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['WTF_CSRF_ENABLED'] = False
+        self.app = app.test_client()
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+    def test_register(self):
+        data = {
+            'login': 'testuser',
+            'password': 'testpassword',
+            'last_name': 'Test',
+            'first_name': 'User',
+            'middle_name': 'Middle',
+            'role': 1  # Замените на соответствующий ID роли
+        }
+
+        response = self.app.post('/auth/register', data=data, follow_redirects=True)
+
+        # Проверка кода ответа
+        self.assertEqual(response.status_code, 200)
+
+        # Проверка, что успешно зарегистрированного пользователя перенаправляют на страницу входа
 
 
 import unittest
