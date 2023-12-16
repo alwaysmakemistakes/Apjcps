@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, current_user
 from datetime import datetime, timedelta
 #урааааааааааа cooommiiit
+#урааа коммиттт 2
 
 app = Flask(__name__)
 application = app
