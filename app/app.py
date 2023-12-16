@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, current_user
 from datetime import datetime, timedelta
-
+#урааааааааааа cooommiiit
 
 app = Flask(__name__)
 application = app
