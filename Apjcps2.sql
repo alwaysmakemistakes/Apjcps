@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: std-mysql
--- Время создания: Дек 07 2023 г., 10:14
+-- Время создания: Дек 22 2023 г., 22:31
 -- Версия сервера: 5.7.26-0ubuntu0.16.04.1
 -- Версия PHP: 8.1.15
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `std_1865_sokap`
+-- База данных: `std_1865_folk`
 --
 
 -- --------------------------------------------------------
@@ -54,10 +54,14 @@ CREATE TABLE `genres` (
 --
 
 INSERT INTO `genres` (`id`, `name`) VALUES
+(7, 'Аниме опеннинги'),
+(5, 'Джаз'),
 (2, 'ПОП'),
 (3, 'РЕП'),
 (1, 'РОК'),
-(4, 'ХИП-ХОП');
+(8, 'Фонк >:)'),
+(4, 'ХИП-ХОП'),
+(6, 'Частушки');
 
 -- --------------------------------------------------------
 
@@ -71,16 +75,6 @@ CREATE TABLE `images` (
   `mime_type` varchar(100) NOT NULL,
   `md5_hash` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `images`
---
-
-INSERT INTO `images` (`id`, `file_name`, `mime_type`, `md5_hash`) VALUES
-('336c4304-a65b-4657-b7ff-00059e7b759d', '2332.png', 'image/png', '40fa290a28b968b429d38dc0f318fab5'),
-('4895f791-085f-45f3-af43-9ed281222ca4', '324.png', 'image/png', 'd5fc021287a522d5228550e76ed184e9'),
-('b44859c3-4579-472b-98bb-8b3c2ca37935', 'photo_2023-03-30_01-23-25.jpg', 'image/jpeg', '192ffb55103591ba9eab6e093658f839'),
-('dd428ed0-4126-4b70-bf3d-9e13fcfc3b52', '200x200.png', 'image/png', '517c14698a945529547b168f312626ee');
 
 -- --------------------------------------------------------
 
@@ -101,13 +95,6 @@ CREATE TABLE `plastinkas` (
   `id_image` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `plastinkas`
---
-
-INSERT INTO `plastinkas` (`id`, `name`, `description`, `year`, `publisher`, `author`, `volume`, `rating_sum`, `rating_num`, `id_image`) VALUES
-(3, 'Evanescence \"Виниловая пластинка Evanescence Synthesis\"', 'Состояние носителя: S. Состояние конверта: S. Synthesis. Виниловая пластинка . 2 lp A 1 Overture 0:57 A 2 Never Go Back 4:50 A 3 Hi-Lo 5:07 A 4 My Heart Is Broken 4:34 B 1 Lacrymosa 3:42 B 2 The End Of The Dream 4:54 B 3 Bring Me To Life 4:15 B 4 Unraveling (Interlude) 1:40 B 5 Imaginary 4:03 C 1 Secret Door 3:48 C 2 Lithium 4:05 C 3 Lost In Paradise 4:43 C 4 Your Star 4:38 D 1 My Immortal 4:25 D 2 The In-Between (Piano Solo) 2:11 D 3 Imperfection 4:22 Тип носителя: Виниловая пластинка\n\nhehe ц222', 2017, 'Sony', 'Evanescence', 11, 9, 2, '336c4304-a65b-4657-b7ff-00059e7b759d');
-
 -- --------------------------------------------------------
 
 --
@@ -118,13 +105,6 @@ CREATE TABLE `plastinka_genre` (
   `plastinka_id` int(11) NOT NULL,
   `genre_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `plastinka_genre`
---
-
-INSERT INTO `plastinka_genre` (`plastinka_id`, `genre_id`) VALUES
-(3, 1);
 
 -- --------------------------------------------------------
 
@@ -138,19 +118,6 @@ CREATE TABLE `plastinka_visits` (
   `plastinka_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `plastinka_visits`
---
-
-INSERT INTO `plastinka_visits` (`id`, `user_id`, `plastinka_id`, `created_at`) VALUES
-(1, 1, 3, '2023-10-22 15:08:15'),
-(2, 1, 3, '2023-10-22 15:09:00'),
-(3, 1, 3, '2023-10-22 15:11:00'),
-(6, 2, 3, '2023-10-22 15:13:44'),
-(7, 2, 3, '2023-10-22 15:14:19'),
-(11, 2, 3, '2023-10-26 22:06:40'),
-(12, 1, 3, '2023-11-11 15:03:31');
 
 -- --------------------------------------------------------
 
@@ -166,14 +133,6 @@ CREATE TABLE `reviews` (
   `plastinka_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `reviews`
---
-
-INSERT INTO `reviews` (`id`, `rating`, `text`, `created_at`, `plastinka_id`, `user_id`) VALUES
-(1, 5, 'Wake me up! Wake me up inside!\r\n\r\n', '2023-10-22 15:09:00', 3, 1),
-(3, 4, 'душевно :]', '2023-10-22 15:14:19', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -217,10 +176,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `last_name`, `first_name`, `middle_name`, `login`, `password_hash`, `role_id`) VALUES
-(1, 'Иван1', 'Иван', 'Иван', 'user1', 'pbkdf2:sha256:260000$27BcLLQ2MQaRZol0$4e025114ebee24145526a7c53daad887a46bf596a6732062a0d310740132b7a2', 1),
-(2, 'Иван2', 'Иван', 'Иван', 'user2', 'pbkdf2:sha256:260000$A6Glt2hNts8WDdfi$f083b9b343d517266c9fb0e783cd6fd86e1ae6d555206b4f247e365b6c5bde95', 2),
-(3, 'Иван3', 'Иван', 'Иван', 'user3', 'pbkdf2:sha256:260000$mq5ognJXFGpAVv1m$a5470501e243454970771afd37af2c238699ff81a732aeaaf3a7f18fc0ba6cc3', 3),
-(8, 'qwerty', 'Иван', 'qwerty', 'user4', 'pbkdf2:sha256:260000$RwjkzkbYW4VlwlKZ$ca3e906cf6b13c97cb7dd188542e277ac3319c60cebe2ea608b0e7927049c77e', 3);
+(1, 'Иван1', 'Иван', 'Иван', 'user1', 'pbkdf2:sha256:260000$FNhdNYye9JvM4XuF$fadb80937ab27c142d8fb7b400c20a30ab753cd9609d9a521ec4d99e384c3b9e', 1),
+(2, 'Иван2', 'Иван', 'Иван', 'user2', 'pbkdf2:sha256:260000$VYf2IvDZCsqqKWha$ecb45a0c8366ec674b5b96af00caf5ed808bafe8bd0095ac5756599cd44e2881', 2),
+(3, 'Иван3', 'Иван', 'Иван', 'user3', 'pbkdf2:sha256:260000$SYHMkKjgGPElr2c0$844f1798858f08a37315bb649e05615776d6f39892879b2aab42e914db1ce8ed', 3);
 
 --
 -- Индексы сохранённых таблиц
@@ -298,25 +256,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `plastinkas`
 --
 ALTER TABLE `plastinkas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `plastinka_visits`
 --
 ALTER TABLE `plastinka_visits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
@@ -328,7 +286,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
