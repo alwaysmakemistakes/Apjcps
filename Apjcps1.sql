@@ -7,6 +7,9 @@
 -- Версия сервера: 5.7.26-0ubuntu0.16.04.1
 -- Версия PHP: 8.1.15
 
+CREATE DATABASE Apjcps1;
+USE Apjcps1;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
